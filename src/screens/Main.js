@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import sampleData from "../api/sampleData";
 
 const K_INDEX = 273.15;
+const WEATHER_API_KEY = "ここにAPIKEY";
 
 const Main = () => {
-  const [datas, setDates] = useState("");
-  const [temp, setTemp] = useState(0);
-  const [weather, setWeather] = useState("");
+  const [weather, setWeather] = useState({
+    cityName: "",
+    temp: "",
+    main: "",
+  });
+  const [searchText, setSearchText] = useState("");
 
-  datas !== "" && console.log(datas);
+  weather !== "" && console.log(weather.cityName);
 
+  // 初期画面用のget
   useEffect(() => {
     axios
       .get(
@@ -17,24 +23,53 @@ const Main = () => {
       )
       .then((res) => {
         const datas = res.data;
-        setDates(datas);
-        const temp = Math.floor((datas.main.temp - K_INDEX) * 10) / 10;
-        const weather = datas.weather[0].main;
-        setTemp(temp);
-        setWeather(weather);
+        setWeather(() => ({
+          cityName: datas.name,
+          temp: Math.floor((datas.main.temp - K_INDEX) * 10) / 10,
+          main: datas.weather[0].main,
+        }));
       });
+
+    // sampleData
+    // console.log(sampleData);
+    // setWeather(() => ({
+    //   cityName: sampleData.name,
+    //   temp: Math.floor((sampleData.main.temp - K_INDEX) * 10) / 10,
+    //   main: sampleData.weather[0].main,
+    // }));
   }, []);
 
+  const searchTextInput = (e) => {
+    console.log(e.target.value);
+    setSearchText(e.target.value);
+  };
+
+  const searchButton = () => {
+    console.log("ボタン押下");
+  };
+
   return (
+    // datas !== "" && (
     <div>
       <header className="App-header">
-        <h2>{datas && datas.name}</h2>
+        <h2>{weather && weather.cityName}</h2>
+        <span>
+          <input
+            className="searchTextInput"
+            onInput={(e) => searchTextInput(e)}
+          ></input>
+          <button onClick={() => searchButton()}>検索</button>
+        </span>
       </header>
-      <ul>
-        <li>{temp}</li>
-        <li>{weather}</li>
-      </ul>
+      <div>
+        <text></text>
+        <ul>
+          <li>{weather.temp}</li>
+          <li>{weather.main}</li>
+        </ul>
+      </div>
     </div>
+    // )
   );
 };
 
