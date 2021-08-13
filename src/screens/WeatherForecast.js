@@ -1,19 +1,17 @@
 import React from "react";
-import { FaRegSun, FaCloudRain } from "react-icons/fa";
-
+import WeatherIcon from "../components/WeatherIcon";
 const WeatherForecast = ({ data, icon }) => {
   return (
     <div>
       {data && (
-        <ul>
-          {icon === true ? (
-            <FaRegSun style={{ color: "tomato", fontSize: 30 }} />
-          ) : (
-            <FaCloudRain style={{ color: "blue", fontSize: 30 }} />
-          )}
-          <li>{data && data.temp}</li>
-          <li>{data && data.main}</li>
-        </ul>
+        <>
+          <h2>{data.cityName}</h2>
+          <ul style={{ display: "flex" }}>
+            <WeatherIcon icon={icon} />
+            <li style={{ marginLeft: 30, listStyle: "none" }}>{data.temp}</li>
+            <li style={{ marginLeft: 30, listStyle: "none" }}>{data.main}</li>
+          </ul>
+        </>
       )}
     </div>
   );

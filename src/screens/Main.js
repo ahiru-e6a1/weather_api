@@ -18,7 +18,6 @@ const Main = () => {
   useEffect(() => {
     console.log("初期レンダー searchText");
     // sampleData
-    console.log(sampleData);
     setWeather(() => ({
       cityName: sampleData.name,
       temp: Math.floor((sampleData.main.temp - K_INDEX) * 10) / 10,
@@ -35,7 +34,6 @@ const Main = () => {
         temp: Math.floor((sampleTokyo.main.temp - K_INDEX) * 10) / 10,
         main: sampleTokyo.weather[0].main,
       }));
-      sampleTokyo && console.log(sampleTokyo);
     }
   }, [searchText]);
 
@@ -57,7 +55,6 @@ const Main = () => {
           <button onClick={() => searchButton()}>検索</button>
         </span>
       </header>
-      <h2>{weather && weather.cityName}</h2>
       <WeatherForecast data={weather} icon={icon} />
     </div>
   );

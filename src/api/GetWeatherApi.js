@@ -1,17 +1,18 @@
 import sampleData from "../api/sampleData";
+import sampleTokyo from "../api/sampleTokyo";
 
 export const GetWeatherApi = () => {
   console.log("get");
-  return GetWeatherApi;
+  return;
 };
 
 export const searchWeatherApi = () => {
   console.log("2回目行こう");
-  console.log(sampleData);
+  console.log(sampleTokyo);
   return;
 };
 
-// const WEATHER_API_KEY = "159a7cbaf4b4bed1fe3b70759451ff8a";
+// const WEATHER_API_KEY = "Key";
 
 // GetWeatherApi();
 // axios
