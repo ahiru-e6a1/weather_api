@@ -1,39 +1,61 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import sampleData from "../api/sampleData";
+import sampleTokyo from "../api/sampleTokyo";
+import WeatherForecast from "./WeatherForecast";
 
 const K_INDEX = 273.15;
 
 const Main = () => {
-  const [datas, setDates] = useState("");
-  const [temp, setTemp] = useState(0);
-  const [weather, setWeather] = useState("");
+  const [weather, setWeather] = useState({
+    cityName: "",
+    temp: "",
+    main: "",
+  });
+  const [searchText, setSearchText] = useState("");
+  const [icon, setIcon] = useState(false);
 
-  datas !== "" && console.log(datas);
-
+  // 初期画面用のget
   useEffect(() => {
-    axios
-      .get(
-        `https://api.openweathermap.org/data/2.5/weather?q=Tokyo&appid=${WEATHER_API_KEY}`
-      )
-      .then((res) => {
-        const datas = res.data;
-        setDates(datas);
-        const temp = Math.floor((datas.main.temp - K_INDEX) * 10) / 10;
-        const weather = datas.weather[0].main;
-        setTemp(temp);
-        setWeather(weather);
-      });
+    console.log("初期レンダー searchText");
+    // sampleData
+    setWeather(() => ({
+      cityName: sampleData.name,
+      temp: Math.floor((sampleData.main.temp - K_INDEX) * 10) / 10,
+      main: sampleData.weather[0].main,
+    }));
+    return;
   }, []);
+
+  // Tokyo選択時の挙動
+  useEffect(() => {
+    if (searchText !== "") {
+      setWeather(() => ({
+        cityName: sampleTokyo.name,
+        temp: Math.floor((sampleTokyo.main.temp - K_INDEX) * 10) / 10,
+        main: sampleTokyo.weather[0].main,
+      }));
+    }
+  }, [searchText]);
+
+  // 天気のデータ変更時に天気によってiconを変える
+  useEffect(() => {
+    weather.main !== "Rain" ? setIcon(true) : setIcon(false);
+  }, [weather]);
+
+  const searchButton = () => {
+    setSearchText("ss");
+  };
 
   return (
     <div>
       <header className="App-header">
-        <h2>{datas && datas.name}</h2>
+        <h1>GetWeatherApi Plactice</h1>
+        <span>
+          <input className="searchTextInput"></input>
+          <button onClick={() => searchButton()}>検索</button>
+        </span>
       </header>
-      <ul>
-        <li>{temp}</li>
-        <li>{weather}</li>
-      </ul>
+      <WeatherForecast data={weather} icon={icon} />
     </div>
   );
 };
